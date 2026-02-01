@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Backend Test UI</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        button {
+            margin: 5px 0;
+            padding: 8px 12px;
+        }
+        pre {
+            background: #f4f4f4;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Backend Test UI</h2>
+
+<button onclick="sendEvent()">Send Event (POST /events/batch)</button>
+<br>
+<button onclick="getStats()">Get Stats (GET /stats)</button>
+
+<h3>Response</h3>
+<pre id="output">Click a button to test...</pre>
+
+<script>
+    function sendEvent() {
+        fetch('/events/batch', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ test: "hello" })
+        })
+        .then(res => res.text())   // 👈 IMPORTANT
+        .then(text => {
+            document.getElementById('output').textContent = text;
+        })
+        .catch(err => {
+            document.getElementById('output').textContent = "ERROR: " + err;
+        });
+    }
+
+    function getStats() {
+        fetch('/ping')
+        .then(res => res.text())   // 👈 IMPORTANT
+        .then(text => {
+            document.getElementById('output').textContent = text;
+        })
+        .catch(err => {
+            document.getElementById('output').textContent = "ERROR: " + err;
+        });
+    }
+</script>
+
+
+</body>
+</html>
